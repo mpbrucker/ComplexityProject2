@@ -1,6 +1,15 @@
 ## Our Project
 ### Evan Lloyd New-Schmidt and Matt Brucker
 
+Project: earthquake paper
+
+Extension #1: Investigate other properties of SOC
+
+
+### Abstract
+
+In this paper, we intend to explore properties of earthquakes - particularly the properties of self-organized criticality (SOC) they exhibit. To this end, we will replicate the experiment conducted by Olami, Feder, and Christensen. They build a model of earthquakes using a sliding block model consisting of a 2D grid of blocks sitting on a fixed plane and attached via springs to a moving plane; each block is connected to its neighboring blocks with more springs. Once the force on a block due to the movement of the plate exceeds the force of static friction on the block, it will come loose and move, distributing its force to its neighbors. With enough force on a block, a chain reaction can occur, causing a fully formed earthquake. They find that the earthquakes in their simulation exhibit a power-law distribution, with an interesting property: the exponent of the power-law distribution depends on the elasticicity parameter, which is a parameter that controls the conservation of energy when a block slides. We intend to replicate their experiment, and further investigate several properties. First, we will see whether the system exhibits SOC properties beyond just power-law distributions, which is the only property observed in the paper - i.e, we will explore whether they exhibit fractal geometry and pink noise. Second, we will investigate how the distribution of forces on each block affects the system; in Olami et al., the initial forces are randomly distributed. We intend to create "fault lines," which are clusters of blocks that begin with a high initial force on them, and explore how these clusters affect the behavior of the system as well as its SOC properties.
+
 2) An abstract that identifies the topics you intend to investigate and the tools you plan to use.
 
 3) An annotated bibliography of 3-5 papers that relate to your topic and/or tools.  Explain what the papers are about, what experiments they report, and what their primary conclusions are.
