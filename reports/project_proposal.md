@@ -39,4 +39,5 @@ The main area for concern in our project is in our extensions. As far as the imp
 Our immediate first steps are to implement the original earthquake model. We plan to implement the model by breaking it into separate chunks for implementing the model and for running the model, displaying neat things, and computing statistics of interest.
 
 **Matt:** My immediate next steps are to write the class to visualize the model and compute the statistics we care about. The statistic computing should be implementable very quickly, although writing a useful visualization might take somewhat longer.
+
 **Evan:** My next steps are to write the implementation of the earthquake model. We plan to implement it by extending Cell2D, which should make implementation fairly simple.
