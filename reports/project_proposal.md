@@ -1,10 +1,5 @@
-## Our Project
+## Finding Properties of Self-Organized Criticality in Cellular Automata Earthquake Models
 ### Evan Lloyd New-Schmidt and Matt Brucker
-
-Project: earthquake paper
-
-Extension #1: Investigate other properties of SOC
-
 
 ### Abstract
 
