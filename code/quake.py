@@ -38,14 +38,14 @@ class Earthquake(Cell2D):
 
         d = self.dist * np.random.random((n,m)) - self.dist / 2
 
-        kernel = np.array(
+        kernel_offsets = np.array(
             [[0,        -self.k2,                          0],
             [-self.k1, (2*self.k1 + 2*self.k2 + self.kl), -self.k1],
             [0,        -self.k2,                          0]]
         )
 
         # array is a 2-dimensional array of size n*m of forces offsets
-        self.array = correlate2d(d, kernel, mode='same', boundary='fill', fillvalue=0)
+        self.array = correlate2d(d, kernel_offsets, mode='same', boundary='fill', fillvalue=0)
 
     # def forces(self):
     #     """Returns array of forces in the model"""
@@ -69,14 +69,18 @@ class Earthquake(Cell2D):
         a = np.where(s, 0, a)  # set shifted blocks to 0
         # print(a)
         self.array = a
+        return np.sum(s>0)
 
         # TODO: if earthquake is evolved bump up forces
 
+    def get_max_force(self):
+        return np.max(self.array)
+
 
 if __name__ == "__main__":
-    steve = Earthquake(3)
+    steve = Earthquake(1000)
     print(steve.array)
     for i in range(3):
-        print('step {}'.format(i))
-        print(steve.array)
-        steve.step()
+        # print('step {}'.format(i))
+        # print(steve.array)
+        print(steve.step())
