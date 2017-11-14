@@ -7,6 +7,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import correlate2d
 
+import logging
+
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+
 # import thinkplot
 # from thinkstats2 import Cdf
 # from thinkstats2 import RandomSeed
@@ -15,7 +19,7 @@ from Cell2D import Cell2D, Cell2DViewer
 
 class Earthquake(Cell2D):
 
-    def __init__(self, n, m=None, dist=1, k1=2, k2=None, kl=2, fth=3):
+    def __init__(self, n, m=None, dist=1, k1=2, k2=None, kl=2, fth=3, global_perturbation=True):
         """Initializes the attributes.
 
         n: number of rows
@@ -25,7 +29,9 @@ class Earthquake(Cell2D):
         k2: spring constant between blocks vertically (N/m)
         kl: spring constant between blocks and moving plate (N/m)
         fth: threshold force
+        global_perturbation: perturb globally
         """
+        self.global_perturbation = global_perturbation
         self.dist = dist
         self.k1 = k1
         self.k2 = k1 if k2 is None else k2
@@ -54,33 +60,34 @@ class Earthquake(Cell2D):
 
     def step(self):
         a = self.array
-        # TODO: redistribute forces above fth
+        logging.debug("INITIAL\n" + str(a))
+        if (np.absolute(a) < self.fth).all() and self.global_perturbation:
+            logging.debug("TILT")
+            fmax = np.amax(a)
+            a += self.fth - fmax
         # get blocks greater than fth
-        s = np.where(a >= self.fth, a, 0)
-        # print(s)
+        s = np.where(np.absolute(a) >= self.fth, a, 0)
+        logging.debug("SHIFTING\n" + str(s))
         # calculate redistributed forces
         kernel = np.array([[0, self.a2, 0],
                            [self.a1, 0, self.a1],
                            [0, self.a2, 0]])
         redistribution = correlate2d(s, kernel, mode='same', boundary='fill', fillvalue=0)
-        # print(redistribution)
+        logging.debug("REDISTRIBUTION\n" + str(redistribution))
         a += redistribution  # add redistributed forces
-        # print(a)
         a = np.where(s, 0, a)  # set shifted blocks to 0
-        # print(a)
+        logging.debug("FINAL\n" + str(a))
         self.array = a
         return np.sum(s>0)
 
-        # TODO: if earthquake is evolved bump up forces
 
     def get_max_force(self):
         return np.max(self.array)
 
 
 if __name__ == "__main__":
-    steve = Earthquake(1000)
+    steve = Earthquake(5)
     print(steve.array)
-    for i in range(3):
-        # print('step {}'.format(i))
-        # print(steve.array)
-        print(steve.step())
+    for i in range(20):
+        logging.info('STEP {}\n{}'.format(i, steve.array))
+        steve.step()
