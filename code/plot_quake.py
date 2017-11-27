@@ -42,7 +42,7 @@ def plot_power_law(test_range=(0.05, 0.25), **params):
         KL_val = K_val/alpha - 4*K_val # Calculate KL based on K and alpha
         exponent = calculate_power_law(k1=K_val, kl=KL_val, **params)
         b_vals.append(exponent)
-    thinkplot.scatter(a_vals, b_vals, label='Beta')
+    thinkplot.scatter(a_vals, np.abs(b_vals), label='Beta')
     thinkplot.config(xlabel='Elasticity coefficient',
                       ylabel='Exponent B')
 
@@ -66,17 +66,19 @@ def plot_frequency(iters=100000, plot=False, **params):
 """
 Estimates the fractal dimension of the earthquake.
 """
-def find_fractals(dim=1, plot=False, iters=100000, **params):
-    n_vals = np.linspace(10,100, 20)
+def find_fractals(val=3, dim=1, plot=False, iters=100000, **params):
+    n_vals = np.linspace(10,100, 19, dtype='int64')
+    print(n_vals)
     cell_counts = []
     for size in n_vals:
-        quake = Earthquake(n=size, **params)
-        quake.run_quake(iters)
-        bins = np.linspace(0,val,5)
-        bins_array = np.digitize(quake.array) # Sort the final forces on each block into bins
+        quake = Earthquake(n=size, fth=val, **params)
+        quake.run(iters)
+        bins = np.linspace(0,val,5) # Create three "bins" for the forces to fall into, from 0 to the threshold value
+        bins_array = np.digitize(np.absolute(quake.array), bins=bins) # Sort the final forces on each block into bins
         fractals_list = (bins_array==dim) # Make a list of arrays with blocks in each bin
-        cell_counts.append(sum(fractals_list))
+        cell_counts.append(np.sum(fractals_list))
     if plot: # If we're plotting, plot on a log-log scale.
+        print(n_vals, cell_counts)
         thinkplot.plot(n_vals, cell_counts, label='Filled cells', linewidth=1)
         thinkplot.config(xlabel='Size of earthquake',
              ylabel='Number of cells',
@@ -86,4 +88,5 @@ def find_fractals(dim=1, plot=False, iters=100000, **params):
     return params[0]
 
 if __name__ == '__main__':
-    calculate_power_law(iters=100,n=3,plot=True)
+    # calculate_power_law(iters=100,n=3,plot=True)
+    find_fractals(iters=10,plot=True)
