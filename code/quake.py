@@ -1,4 +1,5 @@
 from __future__ import print_function, division
+from Cell2D import Cell2D, Cell2DViewer
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -15,7 +16,6 @@ logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 # from thinkstats2 import Cdf
 # from thinkstats2 import RandomSeed
 
-from Cell2D import Cell2D, Cell2DViewer
 
 class Earthquake(Cell2D):
 
@@ -61,6 +61,7 @@ class Earthquake(Cell2D):
     def step(self):
         a = self.array
         logging.debug("INITIAL\n" + str(a))
+        # If no blocks slide, add global perturbation
         if (np.absolute(a) < self.fth).all() and self.global_perturbation:
             logging.debug("TILT")
             fmax = np.amax(a)
@@ -74,11 +75,16 @@ class Earthquake(Cell2D):
                            [0, self.a2, 0]])
         redistribution = correlate2d(s, kernel, mode='same', boundary='fill', fillvalue=0)
         logging.debug("REDISTRIBUTION\n" + str(redistribution))
-        a += redistribution  # add redistributed forces
+        # a += redistrubiton # Add redistrubited forces. Might be a sign issue here.
+        a += np.abs(redistribution)*np.sign(a)  # add redistributed forces
+        # TODO: Figure out whether the sign of the forces causes issues with things.
         a = np.where(s, 0, a)  # set shifted blocks to 0
         logging.debug("FINAL\n" + str(a))
         self.array = a
         return np.sum(s>0)
+
+    def run(self, iters):
+        return [self.step() for _ in range(iters)]
 
 
     def get_max_force(self):
@@ -86,7 +92,7 @@ class Earthquake(Cell2D):
 
 
 if __name__ == "__main__":
-    steve = Earthquake(5)
+    steve = Earthquake(3)
     print(steve.array)
     for i in range(20):
         logging.info('STEP {}\n{}'.format(i, steve.array))
