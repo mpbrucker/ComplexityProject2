@@ -37,6 +37,7 @@ class Earthquake(Cell2D):
         self.k2 = k1 if k2 is None else k2
         self.kl = kl
         self.a1 = self.k1 / (2 * self.k1 + 2 * self.k2 + self.kl)
+        logging.info("Elasticity coefficient: " + str(self.a1))
         self.a2 = self.k2 / (2 * self.k1 + 2 * self.k2 + self.kl)
         self.fth = fth
 
@@ -84,7 +85,12 @@ class Earthquake(Cell2D):
         return np.sum(s>0)
 
     def run(self, iters):
-        return [self.step() for _ in range(iters)]
+        all_vals = []
+        for _ in range(iters):
+            num_slide = self.step()
+            if num_slide > 0:
+                all_vals.append(num_slide)
+        return all_vals
 
 
     def get_max_force(self):

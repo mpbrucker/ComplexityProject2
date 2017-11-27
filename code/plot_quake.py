@@ -14,17 +14,16 @@ def calculate_power_law(iters=100000, plot=False, **params):
     quake = Earthquake(**params)
     mags = quake.run(iters)
     hist_mags = Counter(mags)
-    sizes = range(max(mags)) # Build the list of earthquake sizesj
 
     size_logs = list(hist_mags.keys())
     mag_logs = list(hist_mags.values())
 
-
     params = linregress(np.log(size_logs), np.log(mag_logs))
     if plot: # If we're plotting, plot on a log-log scale.
-        thinkplot.scatter(size_logs, mag_logs)
+        thinkplot.scatter(size_logs, np.divide(mag_logs,max(mag_logs))) # Normalize by the size of the list to convert to probabilities
         thinkplot.config(xlabel='Earthquake size',
-             xlim=[1, list(sizes)[-1]],
+             xlim=[1, 10e4],
+             ylim=[10e-8, 10],
              ylabel='Number of occurrences',
              xscale='log',
              yscale='log')
@@ -88,5 +87,5 @@ def find_fractals(val=3, dim=1, plot=False, iters=100000, **params):
     return params[0]
 
 if __name__ == '__main__':
-    # calculate_power_law(iters=100,n=3,plot=True)
-    find_fractals(iters=10,plot=True)
+    calculate_power_law(iters=100,n=3,plot=True)
+    # find_fractals(iters=10,plot=True)
