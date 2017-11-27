@@ -12,7 +12,7 @@ rc('animation', html='html5')
 
 class Cell3DViewer(Cell2DViewer):
     cmap = matplotlib.cm.get_cmap('RdYlBu')
-    def __init__(self, viewee, z_limit=[0,1]):
+    def __init__(self, viewee, z_limit=[0,3]):
         Cell2DViewer.__init__(self, viewee)
         self.fig = plt.figure()
         self.fig.set_size_inches(10,10, True)
@@ -26,7 +26,7 @@ class Cell3DViewer(Cell2DViewer):
 #         self.fig.canvas.draw()
 
     def get_bars(self):
-        top = self.viewee.array.flatten()
+        top = np.abs(self.viewee.array.flatten())
         n,m = self.viewee.array.shape
         bottom = np.zeros(n*m)
         width = depth = 1
