@@ -10,7 +10,7 @@ from scipy.signal import correlate2d
 
 import logging
 
-logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
 
 # import thinkplot
 # from thinkstats2 import Cdf
@@ -19,7 +19,7 @@ logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 class Earthquake(Cell2D):
 
-    def __init__(self, n, m=None, dist=1, k1=2, k2=None, kl=2, fth=3, global_perturbation=True):
+    def __init__(self, n, m=None, dist=1, k1=2, k2=None, kl=2, fth=3):
         """Initializes the attributes.
 
         n: number of rows
@@ -31,7 +31,6 @@ class Earthquake(Cell2D):
         fth: threshold force
         global_perturbation: perturb globally
         """
-        self.global_perturbation = global_perturbation
         self.dist = dist
         self.k1 = k1
         self.k2 = k1 if k2 is None else k2
@@ -59,11 +58,14 @@ class Earthquake(Cell2D):
     #     a = self.array
     #     return f
 
-    def step(self):
+    def step(self, perturbation=True):
         a = self.array
         logging.debug("INITIAL\n" + str(a))
         # If no blocks slide, add global perturbation
-
+        if (np.absolute(a) < self.fth).all() and perturbation:
+            logging.debug("TILT")
+            fmax = np.amax(a)
+            a += self.fth - fmax
         # get blocks greater than fth
         s = np.where(np.absolute(a) >= self.fth, a, 0)
         logging.debug("SHIFTING\n" + str(s))
@@ -85,13 +87,12 @@ class Earthquake(Cell2D):
         num_slide = 1
         total_slide = 0
         while num_slide > 0:
-            num_slide = self.step()
+            num_slide = self.step(perturbation=False)
             logging.debug("Number of sliding blocks:" + str(num_slide))
             total_slide += num_slide
-        if self.global_perturbation:
-            logging.debug("GLOBAL PERTURBATION")
-            fmax = np.amax(self.array)
-            self.array += self.fth - fmax
+        logging.debug("GLOBAL PERTURBATION")
+        fmax = np.amax(self.array)
+        self.array += self.fth - fmax
         return total_slide
 
     def run(self, iters):
