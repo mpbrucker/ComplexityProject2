@@ -10,7 +10,7 @@ from scipy.signal import correlate2d
 
 import logging
 
-logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 # import thinkplot
 # from thinkstats2 import Cdf
