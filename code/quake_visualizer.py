@@ -17,7 +17,7 @@ class Cell3DViewer(Cell2DViewer):
         self.fig = plt.figure()
         self.fig.set_size_inches(10,10, True)
         self.ax1 = self.fig.add_subplot(111, projection='3d')
-        self.ax1.set_axis_off
+        self.ax1.axis('off')
         self.z_limit = z_limit
         self.ax1.set_zlim(*self.z_limit)
 

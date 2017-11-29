@@ -63,10 +63,7 @@ class Earthquake(Cell2D):
         a = self.array
         logging.debug("INITIAL\n" + str(a))
         # If no blocks slide, add global perturbation
-        if (np.absolute(a) < self.fth).all() and self.global_perturbation:
-            logging.debug("TILT")
-            fmax = np.amax(a)
-            a += self.fth - fmax
+
         # get blocks greater than fth
         s = np.where(np.absolute(a) >= self.fth, a, 0)
         logging.debug("SHIFTING\n" + str(s))
@@ -84,10 +81,23 @@ class Earthquake(Cell2D):
         self.array = a
         return np.sum(s>0)
 
+    def run_quake(self):
+        num_slide = 1
+        total_slide = 0
+        while num_slide > 0:
+            num_slide = self.step()
+            logging.debug("Number of sliding blocks:" + str(num_slide))
+            total_slide += num_slide
+        if self.global_perturbation:
+            logging.debug("GLOBAL PERTURBATION")
+            fmax = np.amax(self.array)
+            self.array += self.fth - fmax
+        return total_slide
+
     def run(self, iters):
         all_vals = []
         for _ in range(iters):
-            num_slide = self.step()
+            num_slide = self.run_quake()
             if num_slide > 0:
                 all_vals.append(num_slide)
         return all_vals
@@ -99,7 +109,6 @@ class Earthquake(Cell2D):
 
 if __name__ == "__main__":
     steve = Earthquake(3)
-    print(steve.array)
-    for i in range(20):
-        logging.info('STEP {}\n{}'.format(i, steve.array))
-        steve.step()
+    # print(steve.array)
+    # steve.run_quake()
+    steve.run(100)
