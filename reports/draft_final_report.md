@@ -20,9 +20,25 @@ Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/Phys
 
 where *dx* is the offset of the block from the equilibrium position, *K1* is the spring constant of horizontal neighbors, *K2* is the spring constant of vertical neighbors, and *KL* is the spring constant connecting to the sliding plate. We limit the scope of our analysis to the isotropic case, where *K1 = K2.* Additionally, we assume that F=0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to *KL*, until a block reaches the threshold force, *Fth,* and slips.
 
-There are **ADD THIS** phases to the earthquake model:
+There are three phases to the earthquake model:
 1. *Initialization:* We simplify the initialization of Olami et al.'s model by initializing each block to a random value of *dx* in the range [0, *Fth*], where *Fth* is defined as the same value for all blocks. Based on the values of *dx,* we then find the initial total force on each block. The total force on each block can be positive or negative, but a cell will slip once the absolute value of the force reaches *Fth* regardless of sign.
-2. *Force Calculation:* First, we find which cells have a total force on them greater than *Fth*.
+2. *Force Redistribution:* First, we find which cells have a total force on them greater than or equal to *Fth*. Then, for each block with force greater than *Fth,* we redistribute forces according to the following equation:
+
+>>> Insert equation for Redistribution
+
+where the force added to each neighbor is defined as:
+
+>>> Insert equation for forces added when slipping
+
+In our model, redistribution always increases the magnitude of forces on a blocks' neighbors, regardless of whether forces are positive or negative. The values of *a1* and *a2* are the elasticity coefficients, which give us an idea of how much energy is lost when a block redistributes its forces to its neighbors. Note that in this model, because we limit it to *K1 = K2,* then *a1 = a2 = a.* When *a = .25* the system is effectively conservative, as each block redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
+
+This process of force redistribution is continued until enough energy has been lost such that no blocks are slipping.
+
+3. *Global Perturbation:* Once all blocks have finished slipping, the earthquake is finished. Then, we perturb the system globally by finding the block with the highest strain and designating it *Fi*. Next we add *Fth - Fi* to all blocks in order to start a new earthquake, since at least one block is guaranteed to slip, and repeat step 2 again.
+
+
+
+
 
 
 ### Bibliography
