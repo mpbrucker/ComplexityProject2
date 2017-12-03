@@ -18,10 +18,11 @@ Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/Phys
 
 >>> Insert equation for forces
 
-where *K1* is the spring constant of horizontal neighbors, *K2* is the spring constant of vertical neighbors, and *KL* is the spring constant connecting to the sliding plate.  
+where *dx* is the offset of the block from the equilibrium position, *K1* is the spring constant of horizontal neighbors, *K2* is the spring constant of vertical neighbors, and *KL* is the spring constant connecting to the sliding plate. We limit the scope of our analysis to the isotropic case, where *K1 = K2.* Additionally, we assume that F=0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to *KL*, until a block reaches the threshold force, *Fth,* and slips.
 
 There are **ADD THIS** phases to the earthquake model:
-1. *Initialization:* Each block is initialized
+1. *Initialization:* We simplify the initialization of Olami et al.'s model by initializing each block to a random value of *dx* in the range [0, *Fth*], where *Fth* is defined as the same value for all blocks. Based on the values of *dx,* we then find the initial total force on each block. The total force on each block can be positive or negative, but a cell will slip once the absolute value of the force reaches *Fth* regardless of sign.
+2. *Force Calculation:* First, we find which cells have a total force on them greater than *Fth*.
 
 
 ### Bibliography
