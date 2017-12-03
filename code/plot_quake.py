@@ -10,7 +10,7 @@ from collections import Counter
 """
 Determines the exponent (b) of the power law distribution of earthquake sizes.
 """
-def calculate_power_law(iters=100000, plot=False, **params):
+def calculate_power_law(iters=100000, plot=False, plot_options={}, **params):
     quake = Earthquake(**params)
     mags = quake.run(iters)
     hist_mags = Counter(mags)
@@ -20,13 +20,14 @@ def calculate_power_law(iters=100000, plot=False, **params):
 
     params = linregress(np.log(size_logs), np.log(mag_logs))
     if plot: # If we're plotting, plot on a log-log scale.
-        thinkplot.scatter(size_logs, np.divide(mag_logs,max(mag_logs))) # Normalize by the size of the list to convert to probabilities
+        thinkplot.scatter(size_logs, np.divide(mag_logs,max(mag_logs)), label="alpha = " + str(quake.a1), **plot_options) # Normalize by the size of the list to convert to probabilities
         thinkplot.config(xlabel='Earthquake size',
              xlim=[1, 10e4],
              ylim=[10e-8, 10],
              ylabel='Number of occurrences',
              xscale='log',
-             yscale='log')
+             yscale='log',
+             legend=True)
 
     return params[0]
 
@@ -78,14 +79,15 @@ def find_fractals(val=3, dim=1, plot=False, iters=100000, **params):
         cell_counts.append(np.sum(fractals_list))
     if plot: # If we're plotting, plot on a log-log scale.
         print(n_vals, cell_counts)
-        thinkplot.plot(n_vals, cell_counts, label='Filled cells', linewidth=1)
+        thinkplot.plot(n_vals, cell_counts, linewidth=1)
         thinkplot.config(xlabel='Size of earthquake',
              ylabel='Number of cells',
              xscale='log',
-             yscale='log')
+             yscale='log',
+             legend=True)
     params = linregress(np.log(n_vals), np.log(cell_counts))
     return params[0]
 
 if __name__ == '__main__':
-    calculate_power_law(iters=100,n=3,plot=True)
+    calculate_power_law(iters=100,n=3,plot=True, plot_options={'color':'r'})
     # find_fractals(iters=10,plot=True)
