@@ -1,5 +1,5 @@
 """Script for running multithreaded powerlaw calculations
-When run directly it 
+When run directly it
 """
 from multiprocessing import Pool, TimeoutError
 import numpy as np
@@ -27,7 +27,12 @@ def calc_power_law_range_multithreaded(test_range=(0.05, 0.25),
     K_val = 1
     KL_vals = K_val/a_vals - 4*K_val  # Calculate KL based on K and alpha
 
-    keywords = [{"k1": K_val, "kl":kl, **params} for kl in KL_vals]  # build keywords into list for process distribution
+    # keywords = [{"k1": K_val, "kl":kl, **params} for kl in KL_vals]  # build keywords into list for process distribution
+    keywords = []
+    for kl in KL_vals:
+        kwd = {'k1': K_val, "kl":kl}
+        kwd.update(params)
+        keywords.append(kwd)
 
     b_vals = pool.map(power_law_wrapper, keywords)
     # b_vals = pool.apply(calculate_power_law, kwds=keywords)
@@ -63,10 +68,10 @@ if __name__ == "__main__":
     timestamp = str(datetime.datetime.now())
 
     params = {
-        "processes": 6,
+        "processes": 4,
         "test_range": (0.05, 0.25),
         "test_def": 15,
-        "iters": 1000,
+        "iters": 100,
         "n": 35
     }
 
