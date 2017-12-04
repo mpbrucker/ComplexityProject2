@@ -44,7 +44,7 @@ This process of force redistribution is continued until enough energy has been l
 
 To investigate the SOC properties of this earthquake model, we simulate earthquakes over a number of iterations and values of parameters. Figure 1 shows the results of our simulation with N=35, over 100,000 iterations. Because the energy released in an earthquake is proportional to the number of blocks that slide, we use the total number of sliding blocks as our measure of earthquake energy, as did Olami et al.
 
-![Figure 1.](fig1.png)
+![Figure 1.](fig1_v2.png)
 
 *Figure 1. The probability of an earthquake's occurrence as a function of its size (measured by the total number of blocks sliding.) Simulated over 100,000 iterations with N=35 and a = 0.1, 0.15, 0.2, and 0.25. Plotted on a log-log scale.*
 
