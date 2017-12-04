@@ -8,7 +8,7 @@ In the physical world, earthquakes have been found to follow a law known as the 
 ### Power-Law Behavior of Earthquakes
 Based on empirical data, Gutenberg and Richter[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf) found that the number of earthquakes N above a certain size m that occur follows the distribution:
 
->>> Insert image of distribution
+![Equation 1.](eqn1.png)
 
 where *a* and *b* are constants that vary depending on the location of the earthquake. The exact cause of this phenomenon is unknown, but a possible explanation is that this occurs because of the geometry of fault lines; fault lines have been found to exhibit fracticality, which along with the power-law feature hints toward the potential that earthquakes exist in a self-organized critical state. Thus we can use a simplified model to help explain how this phenomenon occurs.
 
@@ -16,7 +16,7 @@ where *a* and *b* are constants that vary depending on the location of the earth
 
 Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244) propose a model for earthquakes based on cellular automata. The earthquake is represented as a grid of sliding blocks; each block sits on a stationary plate and is attached to a moving plate, as well as its neighbors, by springs. This system is represented by an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between everything:
 
->>> Insert equation for forces
+![Equation 2.](eqn2.png)
 
 where *dx* is the offset of the block from the equilibrium position, *K1* is the spring constant of horizontal neighbors, *K2* is the spring constant of vertical neighbors, and *KL* is the spring constant connecting to the sliding plate. We limit the scope of our analysis to the isotropic case, where *K1 = K2.* Additionally, we assume that F=0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to *KL*, until a block reaches the threshold force, *Fth,* and slips.
 
@@ -24,11 +24,15 @@ There are three phases to the earthquake model:
 1. *Initialization:* We simplify the initialization of Olami et al.'s model by initializing each block to a random value of *dx* in the range [0, *Fth*], where *Fth* is defined as the same value for all blocks. Based on the values of *dx,* we then find the initial total force on each block. The total force on each block can be positive or negative, but a cell will slip once the absolute value of the force reaches *Fth* regardless of sign.
 2. *Force Redistribution:* First, we find which cells have a total force on them greater than or equal to *Fth*. Then, for each block with force greater than *Fth,* we redistribute forces according to the following equation:
 
->>> Insert equation for Redistribution
+![Equation 3.](eqn3.png)  
+![Equation 4.](eqn4.png)  
+![Equation 5.](eqn5.png)
+
 
 where the force added to each neighbor is defined as:
 
->>> Insert equation for forces added when slipping
+![Equation 6.](eqn6.png)  
+![Equation 7.](eqn7.png)
 
 In our model, redistribution always increases the magnitude of forces on a blocks' neighbors, regardless of whether forces are positive or negative. The values of *a1* and *a2* are the elasticity coefficients, which give us an idea of how much energy is lost when a block redistributes its forces to its neighbors. Note that in this model, because we limit it to *K1 = K2,* then *a1 = a2 = a.* When *a = .25* the system is effectively conservative, as each block redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
 
@@ -36,8 +40,33 @@ This process of force redistribution is continued until enough energy has been l
 
 3. *Global Perturbation:* Once all blocks have finished slipping, the earthquake is finished. Then, we perturb the system globally by finding the block with the highest strain and designating it *Fi*. Next we add *Fth - Fi* to all blocks in order to start a new earthquake, since at least one block is guaranteed to slip, and repeat step 2 again.
 
+### Earthquake Simulations
 
+To investigate the SOC properties of this earthquake model, we simulate earthquakes over a number of iterations and values of parameters. Figure 1 shows the results of our simulation with N=35, over 100,000 iterations. Because the energy released in an earthquake is proportional to the number of blocks that slide, we use the total number of sliding blocks as our measure of earthquake energy, as did Olami et al.
 
+![Figure 1.](fig1.png)
+
+*Figure 1. The probability of an earthquake's occurrence as a function of its size (measured by the total number of blocks sliding.) Simulated over 100,000 iterations with N=35 and a = 0.1, 0.15, 0.2, and 0.25. Plotted on a log-log scale.*
+
+On a log-log scale, the relation between earthquake size and probability of occurrence is fairly linear, in the body of the data. Additionally, as *a* decreases, the slope of the distribution gets more negative. This fits with the findings of Olami et al.: as can be seen in Figure 2, they also found this behavior, concluding that this distribution follows a power law. However, there are some qualitative differences between our graph and theirs; namely, ours bottoms out at a higher occurrence probability, and also has a lower maximum energy. This is because of the difference in the number of simulations: we ran 100,000 earthquakes for each simulation in order for things to remain computationally feasible, whereas the number of earthquakes simulated by Olami et al. is unknown, but at least 10^8 (since their smallest probability is 10^-8). Thus, our graph bottoms out sooner, and because there are fewer earthquakes happening, there is less opportunity to have large earthquakes, so they don't occur.
+
+We take our exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown quantitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients; Figure 3 shows what this relationship looks like quantitatively.
+
+>>> Insert graph of replication and explanation of stuff here.
+
+### Exploring SOC Further: Pink Noise and Fractal Geometry
+
+The distribution of earthquake sizes indicates that this earthquake model is self-organized critical; however, the other primary features of self-organized criticality, pink noise and fractal geometry, can be useful further tests of self-organized criticality.
+
+#### Pink Noise
+
+If we model the slipping of blocks over a series of timesteps as an audio signal, we can
+
+#### Fractal Geometry
+
+We look for fractal geometry
+
+### Conclusion
 
 
 
