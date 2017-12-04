@@ -4,30 +4,40 @@ from thinkstats2 import Hist, Cdf
 from scipy.signal import welch
 from scipy.stats import linregress
 import numpy as np
-from collections import Counter
+from collections import Counter, OrderedDict
+import logging
 
 
 """
 Determines the exponent (b) of the power law distribution of earthquake sizes.
 """
-def calculate_power_law(iters=100000, plot=False, plot_options={}, **params):
+def calculate_power_law(iters=100000, plot=False, del_bottom=False, plot_options={}, **params):
     quake = Earthquake(**params)
     mags = quake.run(iters)
     hist_mags = Counter(mags)
+    if del_bottom:
+        all_keys = list(hist_mags.keys())
+        for item in all_keys:
+            if hist_mags[item] == 1:
+                del hist_mags[item]
+    # print(hist_mags)
+
 
     size_logs = list(hist_mags.keys())
     mag_logs = list(hist_mags.values())
+    log_mag = np.log(mag_logs)
 
-    params = linregress(np.log(size_logs), np.log(mag_logs))
+    params = linregress(np.log(size_logs), np.divide(log_mag,max(log_mag)))
     if plot: # If we're plotting, plot on a log-log scale.
         thinkplot.scatter(size_logs, np.divide(mag_logs,max(mag_logs)), label="alpha = " + str(quake.a1), **plot_options) # Normalize by the size of the list to convert to probabilities
         thinkplot.config(xlabel='Earthquake size',
-             xlim=[1, 10e4],
-             ylim=[10e-8, 10],
+             xlim=[1, 10e3],
+             ylim=[10e-9, 10],
              ylabel='Number of occurrences',
              xscale='log',
              yscale='log',
              legend=True)
+    logging.info('B = ' + str(params[0]))
 
     return params[0]
 
@@ -89,5 +99,5 @@ def find_fractals(val=3, dim=1, plot=False, iters=100000, **params):
     return params[0]
 
 if __name__ == '__main__':
-    calculate_power_law(iters=100,n=3,plot=True, plot_options={'color':'r'})
+    calculate_power_law(iters=1000,n=35,plot=True, del_bottom=True, plot_options={'color':'r'})
     # find_fractals(iters=10,plot=True)
