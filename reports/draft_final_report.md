@@ -50,9 +50,12 @@ To investigate the SOC properties of this earthquake model, we simulate earthqua
 
 On a log-log scale, the relation between earthquake size and probability of occurrence is fairly linear, in the body of the data. Additionally, as *a* decreases, the slope of the distribution gets more negative. This fits with the findings of Olami et al.: as can be seen in Figure 2, they also found this behavior, concluding that this distribution follows a power law. However, there are some qualitative differences between our graph and theirs; namely, ours bottoms out at a higher occurrence probability, and also has a lower maximum energy. This is because of the difference in the number of simulations: we ran 100,000 earthquakes for each simulation in order for things to remain computationally feasible, whereas the number of earthquakes simulated by Olami et al. is unknown, but at least 10^8 (since their smallest probability is 10^-8). Thus, our graph bottoms out sooner, and because there are fewer earthquakes happening, there is less opportunity to have large earthquakes, so they don't occur.
 
-We take our exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown quantitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients; Figure 3 shows what this relationship looks like quantitatively.
+We take our exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown quantitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients; Figure 2 shows what this relationship looks like quantitatively.
 
->>> Insert graph of replication and explanation of stuff here.
+![Figure 2.](fig4.png)
+*Figure 2:* The exponent *B* of the power-law distribution of earthquake sizes as a function of the elasticity coefficient *a*. Simulated with N=35 over 10,000 iterations.
+
+Our graph shows that the exponent on the power-law distribution of earthquake sizes increases with the elasticity coefficient, up until the point where *a* = .2, at which it drops off slightly. This is different from Olami et al., who found that the power-law exponent decreases as *a* increases. This difference is, again, likely caused by the fact that we ran our simulation for fewer iterations, which caused the exponent on the best-fit line to change due to the "bottoming out" values. However, regardless, our model still indicates that the system follows a power-law distribution, which can be seen quantitatively in Figure 2 and qualitatively in Figure 1.
 
 ### Exploring SOC Further: Pink Noise and Fractal Geometry
 
@@ -60,18 +63,19 @@ The distribution of earthquake sizes indicates that this earthquake model is sel
 
 #### Pink Noise
 
-If we model the slipping of blocks over a series of timesteps as a time-domain signal, with the amplitude of the signal at each timestep equal to the amount of energy released that timestep, we can observe the power spectrum of the signal to determine whether the system exhibits pink noise. We run the simulation for 10,000 iterations and plot the results on a log-log scale in Figure 4.
+If we model the slipping of blocks over a series of timesteps as a time-domain signal, with the amplitude of the signal at each timestep equal to the amount of energy released that timestep, we can observe the power spectrum of the signal to determine whether the system exhibits pink noise. We run the simulation for 10,000 iterations and plot the results on a log-log scale in Figure 3.
 
-![Figure 4.](fig2.png)
-*Figure 4:* The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N=35.
+![Figure 3.](fig2.png)
+*Figure 3:* The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N=35.
 
 The slope of this distribution on a log-log scale is -.74, which is fairly close to the standard slope of -1 for pink noise, so while this is somewhat indicative of SOC, it is not a conclusive indicator that the system is SOC.
 
 #### Fractal Geometry
 
-Finally, we examine whether the system is SOC by looking for fractal geometry in the patterns of the forces. To accomplish this, we run the simulation at a number of sizes ranging from N=10 to N=100, and to create a box-counting dimension, we discretize the final grid of forces after the simulation has been run and counting the number of cells that fall into each "bin." Figure 5 shows the results of our simulations.
+Finally, we examine whether the system is SOC by looking for fractal geometry in the patterns of the forces. To accomplish this, we run the simulation at a number of sizes ranging from N=10 to N=100, and to create a box-counting dimension, we discretize the final grid of forces after the simulation has been run and counting the number of cells that fall into each "bin." Figure 4 shows the results of our simulations.
 
-![Figure 5.](fig3.png)
+![Figure 4.](fig3.png)
+*Figure 4:* The size of the box-counting dimension (which, in our system, we define as the number of cells falling within a certain range of forces) as a function of the size of system. Simulated over 1000 iterations each with sizes from N=10 to N=100.
 
 Our simulations resulted in a dimension with exponent 1.92, which is fairly close to quadratic. Thus, it is pretty unlikely that this system exhibits fractal geometry, at least in the dimension of the number of cells falling into each level of forces.
 ### Conclusions
