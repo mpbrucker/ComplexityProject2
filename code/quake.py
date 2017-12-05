@@ -39,6 +39,7 @@ class Earthquake(Cell2D):
         logging.info("Elasticity coefficient: " + str(self.a1))
         self.a2 = self.k2 / (2 * self.k1 + 2 * self.k2 + self.kl)
         self.fth = fth
+        self.slide_seq = []
 
         m = n if m is None else m
 
@@ -81,7 +82,9 @@ class Earthquake(Cell2D):
         a = np.where(s, 0, a)  # set shifted blocks to 0
         logging.debug("FINAL\n" + str(a))
         self.array = a
-        return np.sum(s>0)
+        num_slide = np.sum(s>0)
+        self.slide_seq.append(num_slide)
+        return num_slide
 
     def run_quake(self):
         num_slide = 1
