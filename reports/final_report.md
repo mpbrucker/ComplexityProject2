@@ -3,10 +3,17 @@
 
 ### Abstract
 
+<<<<<<< HEAD
 In the physical world, earthquakes have been found to follow a law known as the Gutenberg-Richter law[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf): the number of earthquakes that occur follows a power-law distribution relative to the size of the earthquake. One potential explanation for this, initially proposed by Bak and Chen, is that the crust of the earth is in a self-organized critical state. They explore this possibility by modeling the earth's crust as a grid of sliding blocks, with each block sitting on a stationary plate and attached to a sliding plate as well as its neighbors with springs. Each block has a certain static friction force which, when overcome by the forces due to the springs, causes the block to slip and redistribute forces to its neighbors. In this paper, we replicate a similar model proposed by Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244), which differs from Bak and Chen's model in that it's nonconservative; blocks have an elasticity coefficient that controls how much force is transfered when slipping occurs, and thus energy is lost from the system. We simulate this model and find that the system follows a power-law distribution over a range of values of elasticity coefficients, making it likely that it's a self-organized critical system. We further explore the other features of self-organized critical systems, pink noise and fractal geometry, to determine the robustness of the system's self-organized critical properties. We find that energy conservation isn't a requirement for self-organized criticality, as the system displays a number of self-organized critical traits across a range of elasticity coefficients.
 
 ### Power-Law Behavior of Earthquakes
 Based on empirical data, Gutenberg and Richter[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf) found that the number of earthquakes N above a certain size m that occur follows the distribution:
+=======
+In the physical world, earthquakes have been found to follow a law known as the Gutenberg-Richter law[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf): the number of earthquakes that occur follows a power-law distribution relative to the size of the earthquake. One potential explanation for this, initially proposed by Bak and Chen, is that the crust of the earth is in a self-organized critical state. They explore this possibility by modeling the boundary of two plates of the earth's crust as a grid of sliding blocks, with each block sitting on a stationary plate and attached to a sliding plate as well as its neighbors with springs. Each block has a certain static friction force which, when overcome by the forces due to the springs, causes the block to slip and redistribute forces to its neighbors. In this paper, we replicate a similar model proposed by Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244), which differs from Bak and Chen's model in that it's nonconservative; blocks have an elasticity coefficient that controls how much force is transfered when slipping occurs, and thus energy is lost from the system. We simulate this model and find that the system follows a power-law distribution over a range of values of elasticity coefficients, making it likely that it's a self-organized critical system. We further explore the other features of self-organized critical systems, pink noise and fractal geometry, to determine the robustness of the system's self-organized critical properties. We find that energy conservation isn't a requirement for self-organized criticality, as the system displays a number of self-organized critical traits across a range of elasticity coefficients.
+
+### Power-Law Behavior of Earthquakes
+Based on empirical data, Gutenberg and Richter[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf) found that the number of earthquakes *N* above a certain size *m* that occur follows the distribution:
+>>>>>>> 55a83fdb6359224952ef149816a124776d998666
 
 ![Equation 1.](eqn1.png)
 
@@ -14,11 +21,12 @@ where *a* and *b* are constants that vary depending on the location of the earth
 
 ### A Cellular Automaton-based Model for Earthquakes
 
+<<<<<<< HEAD
 Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244) propose a model for earthquakes based on cellular automata. The earthquake is represented as a grid of sliding blocks; each block sits on a stationary plate and is attached to a moving plate, as well as its neighbors, by springs. This system is represented by an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between everything:
 
 ![Equation 2.](eqn2.png)
 
-where *dx* is the offset of the block from the equilibrium position, *K1* is the spring constant of horizontal neighbors, *K2* is the spring constant of vertical neighbors, and *KL* is the spring constant connecting to the sliding plate. We limit the scope of our analysis to the isotropic case, where *K1 = K2.* Additionally, we assume that F=0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to *KL*, until a block reaches the threshold force, *Fth,* and slips.
+where *dx* is the offset of the block from the equilibrium position, *K1* is the spring constant of horizontal neighbors, *K2* is the spring constant of vertical neighbors, and *KL* is the spring constant connecting to the sliding plate. We limit the scope of our analysis to the isotropic case, where *K1 = K2.* Additionally, we assume that *F = 0* at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to *KL*, until a block reaches the threshold force, *Fth,* and slips.
 
 There are three phases to the earthquake model:
 1. *Initialization:* We simplify the initialization of Olami et al.'s model by initializing each block to a random value of *dx* in the range [0, *Fth*], where *Fth* is defined as the same value for all blocks. Based on the values of *dx,* we then find the initial total force on each block. The total force on each block can be positive or negative, but a cell will slip once the absolute value of the force reaches *Fth* regardless of sign.
@@ -59,10 +67,11 @@ On a log-log scale, the relation between earthquake size and probability of occu
 
 We take our exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown quantitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients; Figure 2 shows what this relationship looks like quantitatively.
 
-![Figure 2.](fig4.png)
-*Figure 2:* The exponent *B* of the power-law distribution of earthquake sizes as a function of the elasticity coefficient *a*. Simulated with N=35 over 10,000 iterations.
+![Figure 2](fig4.png)
 
-Our graph shows that the exponent on the power-law distribution of earthquake sizes increases with the elasticity coefficient, up until the point where *a* = .2, at which it drops off slightly. This is different from Olami et al., who found that the power-law exponent decreases as *a* increases. This difference is, again, likely caused by the fact that we ran our simulation for fewer iterations, which caused the exponent on the best-fit line to change due to the "bottoming out" values. However, regardless, our model still indicates that the system follows a power-law distribution, which can be seen quantitatively in Figure 2 and qualitatively in Figure 1.
+*Figure 2. The critical exponent B of the power-law distribution of earthquake sizes as a function of the elasticity coefficient a. Simulated with N=35 over 10,000 iterations.*
+
+Our graph shows that the exponent on the power-law distribution of earthquake sizes increases with the elasticity coefficient, up until the point where *a = .2*, at which it drops off slightly. This is different from Olami et al., who found that the power-law exponent decreases as *a* increases. This difference is, again, likely caused by the fact that we ran our simulation for fewer iterations, which caused the exponent on the best-fit line to change due to the "bottoming out" values. However, regardless, our model still indicates that the system follows a power-law distribution, which can be seen quantitatively in Figure 2 and qualitatively in Figure 1.
 
 ### Exploring SOC Further: Pink Noise and Fractal Geometry
 
@@ -73,18 +82,20 @@ The distribution of earthquake sizes indicates that this earthquake model is sel
 If we model the slipping of blocks over a series of timesteps as a time-domain signal, with the amplitude of the signal at each timestep equal to the amount of energy released that timestep, we can observe the power spectrum of the signal to determine whether the system exhibits pink noise. We run the simulation for 10,000 iterations and plot the results on a log-log scale in Figure 3.
 
 ![Figure 3.](fig2.png)
-*Figure 3:* The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N=35.
+
+*Figure 3. The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N=35.*
 
 The slope of this distribution on a log-log scale is -.74, which is fairly close to the standard slope of -1 for pink noise, so while this is somewhat indicative of SOC, it is not a conclusive indicator that the system is SOC.
 
 #### Fractal Geometry
-
-Finally, we examine whether the system is SOC by looking for fractal geometry in the patterns of the forces. To accomplish this, we run the simulation at a number of sizes ranging from N=10 to N=100, and to create a box-counting dimension, we discretize the final grid of forces after the simulation has been run and counting the number of cells that fall into each "bin." Figure 4 shows the results of our simulations.
+Finally, we examine whether the system is SOC by looking for fractal geometry in the patterns of the forces. To accomplish this, we run the simulation at a number of sizes ranging from *N=10* to *N=100*, and to create a box-counting dimension, we discretize the final grid of forces after the simulation has been run and counting the number of cells that fall into each "bin." Figure 4 shows the results of our simulations.
 
 ![Figure 4.](fig3.png)
-*Figure 4:* The size of the box-counting dimension (which, in our system, we define as the number of cells falling within a certain range of forces) as a function of the size of system. Simulated over 1000 iterations each with sizes from N=10 to N=100.
+
+*Figure 4. The size of the box-counting dimension (which, in our system, we define as the number of cells falling within a certain range of forces) as a function of the size of system. Simulated over 1000 iterations each with sizes from N=10 to N=100.*
 
 Our simulations resulted in a dimension with exponent 1.92, which is fairly close to quadratic. Thus, it is pretty unlikely that this system exhibits fractal geometry, at least in the dimension of the number of cells falling into each level of forces.
+
 ### Conclusions
 
 Early simulations of this system point to it being self-organized critical: the distribution of earthquake sizes is fairly close to a power law, with an exponent that decreases as elasticity decreases, as Olami et al. found in their paper. Additionally, we found that the system displays this behavior across a range of different elasticity coefficients, even when the system is nonconservative. Our other tests also indicate some presence of self-organized critical qualities: the noise of the system is close to pink, which is indicative of self-organized criticality, although not exactly at the level of pink noise. Similarly, the system appears somewhat fractal - but again, not conclusively so. So, in answering the fundamental question of whether earthquake systems can be nonconservative and self-organized critical, we find that there is not enough evidence to say that nonconservative systems such as the earthquake model can be critical.
