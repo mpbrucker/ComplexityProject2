@@ -136,6 +136,3 @@ class Cell2DViewer:
         a = self.viewee.array
         self.im.set_array(a)
         return (self.im,)
-
-
-

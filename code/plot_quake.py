@@ -4,6 +4,7 @@ from scipy.signal import welch
 from scipy.stats import linregress
 import numpy as np
 from collections import Counter
+from thinkstats2 import Pmf, Cdf
 import logging
 import matplotlib
 matplotlib.rc('figure', figsize=(8,6))
@@ -25,20 +26,27 @@ def calculate_power_law(iters=100000, plot=False, del_bottom=False, plot_options
     # print(hist_mags)
 
 
-    size_logs = list(hist_mags.keys())
-    mag_logs = list(hist_mags.values())
-    log_mag = np.log(mag_logs)
+    size_vals = list(hist_mags.keys())
+    mag_vals = list(hist_mags.values())
 
-    params = linregress(np.log(size_logs), np.log(np.divide(mag_logs,max(mag_logs))))
+    mag_cdf = Cdf(mag_vals)
+
+
+    params = linregress(np.log(size_vals), np.log(np.divide(mag_vals,len(mags))))
     if plot: # If we're plotting, plot on a log-log scale.
-        thinkplot.scatter(size_logs, np.divide(mag_logs,max(mag_logs)), label="alpha = " + str(quake.a1), **plot_options) # Normalize by the size of the list to convert to probabilities
+        thinkplot.preplot(cols=2)
+        thinkplot.scatter(size_vals, np.divide(mag_vals,len(mags)), label="alpha = " + str(quake.a1), **plot_options) # Normalize by the size of the list to convert to probabilities
         thinkplot.config(xlabel='Earthquake size',
-            #  xlim=[1, 10e3],
-            #  ylim=[10e-9, 10],
-             ylabel='Number of occurrences',
+             xlim=[1, 10e3],
+             ylim=[10e-9, 1],
+             ylabel='Probability of occurrences',
              xscale='log',
              yscale='log',
              legend=True)
+        thinkplot.subplot(2)
+        thinkplot.Cdf(mag_cdf, label="alpha = " + str(quake.a1), **plot_options)
+        thinkplot.config(xlabel='Earthquake size', xscale='log',
+                 ylabel='CDF')
     logging.info('B = ' + str(params[0]))
 
     return params[0]

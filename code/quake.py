@@ -53,6 +53,11 @@ class Earthquake(Cell2D):
 
         # array is a 2-dimensional array of size n*m of forces offsets
         self.array = correlate2d(d, kernel_offsets, mode='same', boundary='fill', fillvalue=0)
+        # self.array=np.array([[0,0,0,0,0],
+        #                      [0,0,0,0,0],
+        #                     [0,0,4*self.fth,0,0],
+        #                     [0,0,0,0,0],
+        #                     [0,0,0,0,0]],dtype='float64')
 
     # def forces(self):
     #     """Returns array of forces in the model"""
@@ -66,7 +71,8 @@ class Earthquake(Cell2D):
         if (np.absolute(a) < self.fth).all() and perturbation:
             logging.debug("TILT")
             fmax = np.amax(a)
-            a += self.fth - fmax
+            logging.debug("Max force"+ str(fmax))
+            a += (self.fth - fmax)
         # get blocks greater than fth
         s = np.where(np.absolute(a) >= self.fth, a, 0)
         logging.debug("SHIFTING\n" + str(s))
@@ -76,8 +82,8 @@ class Earthquake(Cell2D):
                            [0, self.a2, 0]])
         redistribution = correlate2d(s, kernel, mode='same', boundary='fill', fillvalue=0)
         logging.debug("REDISTRIBUTION\n" + str(redistribution))
-        # a += redistrubiton # Add redistrubited forces. Might be a sign issue here.
-        a += np.abs(redistribution)*np.sign(a)  # add redistributed forces
+        a += redistribution # Add redistrubited forces. Might be a sign issue here.
+        # a += np.abs(redistribution)#*np.where(sign_array == 0, sign_array, 1)  # add redistributed forces
         # TODO: Figure out whether the sign of the forces causes issues with things.
         a = np.where(s, 0, a)  # set shifted blocks to 0
         logging.debug("FINAL\n" + str(a))

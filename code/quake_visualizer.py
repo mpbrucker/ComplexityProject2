@@ -9,6 +9,12 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import rc
 rc('animation', html='html5')
 
+class EarthquakeViewer(Cell2DViewer):
+    cmap = plt.get_cmap('bwr')
+    options = dict(interpolation='nearest', alpha=0.8,
+                   vmin=-3, vmax=3)
+
+
 
 class Cell3DViewer(Cell2DViewer):
     cmap = matplotlib.cm.get_cmap('RdYlBu')
