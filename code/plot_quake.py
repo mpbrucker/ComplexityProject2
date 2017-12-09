@@ -73,6 +73,7 @@ def plot_frequency(iters=100000, plot=False, **params):
     quake = Earthquake(**params)
     quake.run(iters) # Get the list of the number of sliding blocks each timestep
     amp = quake.slide_seq
+    logging.debug("Running Welch's Algorithm")
     nperseg = 1024
     freqs, powers = welch(amp, nperseg=nperseg, fs=nperseg)
     if plot: # If we're plotting, plot on a log-log scale.
