@@ -14,15 +14,15 @@ where *a* and *b* are constants that vary depending on the location of the earth
 
 ### A Cellular Automaton-based Model for Earthquakes
 
-Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244) propose a model for earthquakes based on cellular automata. The earthquake is represented as a grid of sliding blocks; each block sits on a stationary plate and is attached by springs to a moving plate, as well as its neighbors. Olami et al. simulate this system by representing everything with an *NxN* grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between neighbors and the sliding plate:
+Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244) propose a model for earthquakes based on cellular automata. The earthquake is represented as a grid of sliding blocks; each block sits on a stationary plate and is attached by springs to a moving plate, as well as its neighbors. Olami et al. simulate this system by representing everything with an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between neighbors and the sliding plate:
 
 ![Equation 2.](eqn2.png)
 
 
-where *dx* is the offset of the block from the equilibrium position, K<sub>1</sub> is the spring constant of horizontal neighbors, K<sub>2</sub> is the spring constant of vertical neighbors, and KL is the spring constant connecting to the sliding plate. We limit the scope of our analysis to the isotropic case, where *K1 = K2*. Additionally, we assume that *F = 0* at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to *KL*, until a block reaches the threshold force, *Fth*, and slips.
+where dx is the offset of the block from the equilibrium position, K<sub>1</sub> is the spring constant of horizontal neighbors, K<sub>2</sub> is the spring constant of vertical neighbors, and KL is the spring constant connecting to the sliding plate. Olami et al. limit the scope of their analysis to the isotropic case, where K<sub>1</sub> = K<sub>2</sub>; this means that when a block slips, it redistributes its force equally to its horizontal and vertial neighbors. Additionally, we assume that F = 0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to K<sub>L</sub>, until a block reaches the threshold force, F<sub>th</sub>, and slips.
 There are three phases to the earthquake model:
-1. *Initialization:* We simplify the initialization of Olami et al.'s model by initializing each block to a random value of *dx* in the range [0, *Fth*], where *Fth* is defined as the same value for all blocks. Based on the values of *dx,* we then find the initial total force on each block. The total force on each block can be positive or negative, but a cell will slip once the absolute value of the force reaches *Fth* regardless of sign.
-2. *Force Redistribution:* First, we find which cells have a total force on them greater than or equal to *Fth*. Then, for each block with force greater than *Fth*, we redistribute forces according to the following equation:
+1. *Initialization:* In their model, Olami et al. initialize each block to a random value of dx in the range [0, F<sub>th</sub>], where <sub>Fth</sub> is a universal value for all blocks. Based on the values of dx, we then find the initial total force on each block. The total force on each block can be positive or negative, but a cell will slip once the absolute value of the force reaches F<sub>th</sub> regardless of sign.
+2. *Force Redistribution:* First, Olami et al. find which cells have a total force on them greater than or equal to F<sub>th</sub>. Then, for each block with force greater than F<sub>th</sub>, tbey redistribute forces according to the following equations:
 
   ![Equation 3.](eqn3.png)  
   ![Equation 4.](eqn4.png)  
@@ -33,7 +33,7 @@ There are three phases to the earthquake model:
   ![Equation 6.](eqn6.png)  
   ![Equation 7.](eqn7.png)
 
-  In our model, redistribution always increases the magnitude of forces on a   blocks' neighbors, regardless of whether forces are positive or negative. The   values of *a1* and *a2* are the elasticity coefficients, which give us an idea   of how much energy is lost when a block redistributes its forces to its   neighbors. Note that in this model, because we limit it to *K1 = K2,* then *a1   = a2 = a.* When *a = .25* the system is effectively conservative, as each block   redistributes 25% of its force to each of its four neighbors, conserving energy   (except at the edges).
+  In this model, the values of &#945;<sub>1</sub> and &#945;<sub>2</sub> are the elasticity coefficients, which give us an idea   of how much energy is lost when a block redistributes its forces to its   neighbors. Note that in this model, because we limit it to *K1 = K2,* then *a1   = a2 = a.* When *a = .25* the system is effectively conservative, as each block   redistributes 25% of its force to each of its four neighbors, conserving energy   (except at the edges).
 
   This process of force redistribution is continued until enough energy has been lost such that no blocks are slipping.
 
