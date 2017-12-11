@@ -122,6 +122,7 @@ def find_fractals(val=4, plot=False, dims=range(4), iters=10000, **params):
                  title='Dimension: '+ str(dim))
             params = linregress(np.log(n_vals), np.log(cell_counts[dim]))
             all_params.append(params[0])
+    
     return all_params
 
 if __name__ == '__main__':

@@ -1,3 +1,8 @@
+>>> Power law (0.1, 0.15, 0.2, 0.25): 2.6, 2.3, 2.25, 1.7
+>>> Pink noise: a = -1.07
+>>> Fractal geometry: (dim1, dim2, dim3, dim4): 2.05, 1.97, 0.01, nan
+
+
 # Self-Organized Critical Properties of Earthquakes through Cellular Automata-based Models
 ### Evan New-Schmidt, Matt Brucker
 
@@ -32,8 +37,7 @@ There are three phases to the earthquake model:
 
   ![Equation 6.](eqn6.png)  
   ![Equation 7.](eqn7.png)
-
-  In this model, the values of &#945;<sub>1</sub> and &#945;<sub>2</sub> are the elasticity coefficients, which give us an idea   of how much energy is lost when a block redistributes its forces to its neighbors. Note that in this model, because we limit it to K<sub>1</sub> = K<sub>2</sub>, then &#945;<sub>1</sub> = &#945;<sub>2</sub> =  &#945;. When  &#945; = .25 the system is effectively conservative, as each block   redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
+    In this model, the values of &#945;<sub>1</sub> and &#945;<sub>2</sub> are the *elasticity coefficients*, which control what percentage of force is distributed from a sliding block to each of its neighbors, and thus give us an idea of how much force is lost when a block slides. Note that in this model, because we limit it to K<sub>1</sub> = K<sub>2</sub>, then &#945;<sub>1</sub> = &#945;<sub>2</sub> =  &#945;. When  &#945; = .25 the system is effectively conservative, as each block   redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
 
   This process of force redistribution is continued until enough energy has been lost such that no blocks are slipping.
 
@@ -49,13 +53,17 @@ In the first timestep, the center block slides; in the next timestep, none of th
 
 ### Earthquake Simulations
 
-To replicate the work of Olami et al. and investigate the SOC properties of this earthquake model, we simulate earthquakes over a number of iterations and values of parameters. Figure 2 shows the results of our simulation with *N=35*, over 100,000 iterations. Because the energy released in an earthquake is proportional to the number of blocks that slide, we use the total number of sliding blocks as our measure of earthquake energy, as did Olami et al.
+To replicate the work of Olami et al. and investigate the SOC properties of this earthquake model, we simulate this process of earthquake formation across varying parameters, in particular &#945;. Figure 2 shows the results of our simulation at different values of &#945;. We use the total number of sliding blocks as our measure of energy, as do Olami et al., since it is proportional to the amount of energy released by the earthquake.
 
 ![Earthquake Occurrence vs Magnitude](fig1_v2.png)
 
-_**Figure 2.** The probability of an earthquake's occurrence as a function of its size (measured by the total number of blocks sliding.) Simulated over 100,000 iterations with N=35 and a = 0.1, 0.15, 0.2, and 0.25. Plotted on a log-log scale._
+_**Figure 2.** The probability of an earthquake's occurrence as a function of its size (measured by the total number of blocks sliding.) Simulated over 100,000 iterations with N=35 and &#945; = 0.1, 0.15, 0.2, and 0.25. Plotted on a log-log scale._
 
-On a log-log scale, the relation between earthquake size and probability of occurrence is fairly linear, in the body of the data. Additionally, as *a* decreases, the slope of the distribution gets more negative. This fits with the findings of Olami et al.: as can be seen in Figure 2, they also found this behavior, concluding that this distribution follows a power law. However, there are some qualitative differences between our graph and theirs; namely, ours bottoms out at a higher occurrence probability, and also has a lower maximum energy. This is because of the difference in the number of simulations: we ran 100,000 earthquakes for each simulation in order for things to remain computationally feasible, whereas the number of earthquakes simulated by Olami et al. is unknown, but at least 10^8 (since their smallest probability is 10^-8). Thus, our graph bottoms out sooner, and because there are fewer earthquakes happening, there is less opportunity to have large earthquakes, so they don't occur.
+On a log-log scale, the relation between earthquake size and probability of occurrence is fairly linear, in the body of the data. Additionally, as &#945; increases, the slope of the distribution gets more negative. This fits with the findings of Olami et al.: as can be seen in Figure 2, they also found this behavior, concluding that this distribution follows a power law. In order to closer investigate whether this distribution follows a power law, we observe the CDF of the earthquake probabilities:
+
+>>> Insert earthquake CDF here
+
+However, there are some qualitative differences between our graph and theirs; namely, ours bottoms out at a higher occurrence probability, and also has a lower maximum energy. This is because of the difference in the number of simulations: we ran 100,000 earthquakes for each simulation in order for things to remain computationally feasible, whereas the number of earthquakes simulated by Olami et al. is unknown, but at least 10^8 (since their smallest probability is 10^-8). Thus, our graph bottoms out sooner, and because there are fewer earthquakes happening, there is less opportunity to have large earthquakes, so they don't occur.
 
 We take our exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown qualitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients; Figure 3 shows what this relationship looks like quantitatively.
 
