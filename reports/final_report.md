@@ -99,12 +99,12 @@ If we model the earthquake over a series of timesteps as a time-domain signal, w
 
 _**Figure 4.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35._
 
-The body of the data is fairly linear; however, the distribution is flatter at low frequencies and curves upward at high frequencies. The slope of this distribution on a log-log scale is -1.07, which is close to the standard slope of -1 for pink noise. This indicates that the system is SOC; the upward curve at high frequencies is likely due to noise, since power is low enough that small variations could cause a noticeable upward curve as in our data. 
+The body of the data is fairly linear; however, the distribution is flatter at low frequencies and curves upward at high frequencies. The slope of this distribution on a log-log scale is -1.07, which is close to the standard slope of -1 for pink noise. This indicates that the system is SOC; the upward curve at high frequencies is likely due to noise, since power is low enough that small variations could cause a noticeable upward curve as in our data.
 
 #### Fractal Geometry
-Finally, we examine whether the system is SOC by looking for fractal geometry in the patterns of the forces. To accomplish this, we run the simulation at a number of sizes ranging from N = 10 to N = 100, and to create a box-counting dimension, we discretize the final grid of forces after the simulation has been run and counting the number of cells that fall into each "bin." Figure 5 shows the results of our simulations.
+The last factor we investigate to determine the system's SOC properties is fractal geometry. Finding fractal geometry requires a box-counting dimension; for our system, we choose the total force on each block as the box-counting dimension, as it is a quantitative value that can be measured across different values of N. However, because the forces on each block are non-discrete values, we must first convert them into discrete values by placing them into different "dimensions," where each dimension contains the forces that fall within a certain range. In our model, we sort the forces on blocks into two dimensions, one with forces in the range [0, F<sub>th</sub>/2] and one with forces in range [F<sub>th</sub>/2, F<sub>th</sub>]. Then, we count the number of blocks that fall within each range. 
 
-![Fractal Dimension of Earthquake Model](fig3.png)
+![Fractal Dimension of Earthquake Model](fractals_2.png)
 
 _**Figure 5.** The size of the box-counting dimension (which, in our system, we define as the number of cells falling within a certain range of forces) as a function of the size of system. Simulated over 1000 iterations each with sizes from N = 10 to N = 100._
 
