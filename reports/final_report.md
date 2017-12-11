@@ -19,7 +19,11 @@ where a and b are constants that vary depending on the location of the earthquak
 
 ### A Cellular Automaton-based Model for Earthquakes
 
-Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244) propose a model for earthquakes based on cellular automata. The earthquake is represented as a grid of sliding blocks; each block sits on a stationary plate and is attached by springs to a moving plate, as well as its neighbors. Olami et al. simulate this system by representing everything with an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between neighbors and the sliding plate:
+Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244) propose a model for earthquakes based on cellular automata. As shown below, an earthquake is represented as a grid of sliding blocks; each block sits on a stationary plate and is attached by springs to a moving plate, as well as its neighbors.
+
+![The earthquake model.](Plates.png)
+
+ Olami et al. simulate this system by representing everything with an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between neighbors and the sliding plate:
 
 ![Equation 2.](eqn2.png)
 
@@ -57,37 +61,45 @@ In the first timestep, the center block slides; in the next timestep, none of th
 
 To replicate the work of Olami et al. and investigate the SOC properties of this earthquake model, we simulate this process of earthquake formation across varying parameters, in particular α. Figure 2 shows the results of our simulation at different values of α. We use the total number of sliding blocks as our measure of energy, as do Olami et al., since it is proportional to the amount of energy released by the earthquake.
 
-![Earthquake Occurrence vs Magnitude](fig1_v2.png)
+![Earthquake Occurrence vs Magnitude](power_law_4.png)
 
 _**Figure 2.** The probability of an earthquake's occurrence as a function of its size (measured by the total number of blocks sliding.) Simulated over 100,000 iterations with N = 35 and α = 0.1, 0.15, 0.2, and 0.25. Plotted on a log-log scale._
 
-On a log-log scale, the relation between earthquake size and probability of occurrence is fairly linear, in the body of the data. Additionally, as α increases, the slope of the distribution gets more negative. This fits with the findings of Olami et al.: as can be seen in Figure 2, they also found this behavior, concluding that this distribution follows a power law. In order to closer investigate whether this distribution follows a power law, we observe the CDF of the earthquake probabilities:
+Focusing on the body of the data, the relation between earthquake size and probability of occurrence is fairly linear on a log-log scale. Additionally, as α increases, the slope of the distribution gets less negative. Our data quantitatively matches Olami et al.: as can be seen in Figure 2, they also observe distributions that appeared to be power-law, with slope becoming less negative as α increases. In order to closer investigate whether this distribution follows a power law, we also plot the CDF of the earthquake probabilities:
 
->>> Insert earthquake CDF here
+![The earthquake power CDF.](power_law_CDF.png)
 
-However, there are some qualitative differences between our graph and theirs; namely, ours bottoms out at a higher occurrence probability, and also has a lower maximum energy. This is because of the difference in the number of simulations: we ran 100,000 earthquakes for each simulation in order for things to remain computationally feasible, whereas the number of earthquakes simulated by Olami et al. is unknown, but at least 10<sup>8</sup> (since their smallest probability is 10<sup>-8</sup>). Thus, our graph bottoms out sooner, and because there are fewer earthquakes happening, there is less opportunity to have large earthquakes, so they don't occur.
+On a log-x scale, the body of the distribution is fairly straight; additionally, the distribution follows a similar shape across all values of α. Thus, the power-law shape of the CDF appears to be consistent with our results from the log-log PMF plot, indicating that the system follows a power-law distribution.
 
-We take our exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown qualitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients; Figure 3 shows what this relationship looks like quantitatively.
+The only difference in the distribution of our data compared to Olami et al.'s is in the tail behavior; the minimum probability of occurrence we found is 10<sup>-6</sup>, whereas theirs is approximately 10<sup>-8</sup>. This difference is due to the number of simulation iterations - we ran the simulation for 10<sup>6</sup> iterations, making 10<sup>-6</sup> the absolute minimum probability, whereas Olami et al. ran their simulation over approximately 10<sup>8</sup> iterations, lowering the minimum probability. However, this difference only affects the tail of the distribution, which deviates from the straight-line behavior anyway, so we focus only on the body of the data when looking for power-law behavior.
+
+
+
+Olami et al. take their exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown qualitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients. If the distribution of earthquake sizes E is follows a power-law distribution with size m, the distribution of sizes approximately follows:
+
+![The earthquake power law.](power_law_eqn.png)
+
+Thus, the slope of the distribution on a log-log scale gives us the exponent β. Olami et al. find β across different values of α by performing the same simulations as earlier, seen in Figure 3:
 
 ![Power-Law Distribution of Earthquake Size vs Elasticity Coefficient](fig4.png)
 
-_**Figure 3.** The critical exponent B of the power-law distribution of earthquake sizes as a function of the elasticity coefficient a. Simulated with N = 35 over 10,000 iterations._
+_**Figure 3.** The critical exponent β of the power-law distribution of earthquake sizes as a function of the elasticity coefficient α. Simulated with N = 35 over 100s,000 iterations._
 
 Our graph shows that the exponent on the power-law distribution of earthquake sizes increases with the elasticity coefficient, up until the point where a = .2, at which it drops off slightly. This is different from Olami et al., who found that the power-law exponent decreases as a increases. This difference is, again, likely caused by the fact that we ran our simulation for fewer iterations, which caused the exponent on the best-fit line to change due to the "bottoming out" values. However, regardless, our model still indicates that the system follows a power-law distribution, which can be seen quantitatively in Figure 3 and qualitatively in Figure 2. This points toward the system being SOC, but there are more aspects of SOC we can investigate in order to get a more accurate picture.
 
 ### Exploring SOC Further: Pink Noise and Fractal Geometry
 
-This system's distribution of earthquake sizes suggests that this earthquake model may be self-organized critical; however, power-law behavior is just one element of SOC systems; we develop a more thorough picture of this system's SOC features by investigating the other two common properties of SOC systems, pink noise and fractal geometry.
+This system's distribution of earthquake sizes suggests that this earthquake model may be self-organized critical under a variety of values of α. However, power-law behavior is just one element of SOC systems; we develop a more thorough picture of this system's SOC features by investigating the other two defining properties of SOC systems, pink noise and fractal geometry.
 
 #### Pink Noise
 
-If we model the slipping of blocks over a series of timesteps as a time-domain signal, with the amplitude of the signal at each timestep equal to the amount of energy released that timestep, we can observe the power spectrum of the signal to determine whether the system exhibits pink noise. We run the simulation for 10,000 iterations and plot the results on a log-log scale in Figure 4.
+If we model the earthquake over a series of timesteps as a time-domain signal, with the amplitude of the signal at each timestep equal to the number of blocks that slip, we can convert the signal to the frequency domain and observe the power spectrum of the signal to determine whether the system exhibits pink noise. We run the simulation for 100,000 iterations and plot the results in Figure 4.
 
-![Power Spectrum of Earthquake Signal](fig2.png)
+![Power Spectrum of Earthquake Signal](frequency_2.png)
 
 _**Figure 4.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35._
 
-The slope of this distribution on a log-log scale is -.74, which is fairly close to the standard slope of -1 for pink noise, so while this is somewhat indicative of SOC, it is not a conclusive indicator that the system is SOC.
+The body of the data is fairly linear; however, the distribution is flatter at low frequencies and curves upward at high frequencies. The slope of this distribution on a log-log scale is -1.07, which is close to the standard slope of -1 for pink noise. This indicates that the system is SOC; the upward curve at high frequencies is likely due to noise, since power is low enough that small variations could cause a noticeable upward curve as in our data. 
 
 #### Fractal Geometry
 Finally, we examine whether the system is SOC by looking for fractal geometry in the patterns of the forces. To accomplish this, we run the simulation at a number of sizes ranging from N = 10 to N = 100, and to create a box-counting dimension, we discretize the final grid of forces after the simulation has been run and counting the number of cells that fall into each "bin." Figure 5 shows the results of our simulations.
