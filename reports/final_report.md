@@ -11,11 +11,13 @@
 In the physical world, earthquakes follow an empirically-determined law known as the Gutenberg-Richter law[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf): the number of earthquakes that occur, relative to the size of the earthquake, follow a power-law distribution. One potential explanation for this, initially proposed by Bak and Chen, is that the crust of the earth is in a self-organized critical (SOC) state. They explore this possibility by modeling a "fault line" in the earth's crust as a grid of sliding blocks, with each block sitting on a stationary plate and attached by springs to a sliding plate as well as its neighbors. Each block has a static friction force which, when overcome by the total spring force, causes the block to slip, thereby redistributing its force to its neighbors. In this paper, we replicate a similar model proposed by Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244), which differs from Bak and Chen's model in that it is nonconservative: blocks have an elasticity coefficient that controls how much force is transfered when slipping occurs, and thus energy is lost from the system. This is important because previous model such as Bak and Chen's assume energy conservation to be necessary for SOC; however, earthquakes in the real world are not conservative, and as such, under Bak and Chen's definition they lack the elements necessary to be SOC. We simulate Olami et al.'s model and find results consistent with theirs: the sizes of earthquakes  follow a power-law distribution over a range of values of elasticity coefficients, suggesting that this earthquake may be SOC. In order to more thoroughly define whether the system is SOC, We apply the other features of SOC systems - pink noise and fractal geometry - to determine the robustness of the system's self-organized critical properties. We find that this system does exhibit SOC behavior to some degree, most notably in the power-law distribution of earthquake sizes. However, its lack of pink noise or fractal geometry does not suggest that SOC is possible without a conservative system.
 
 ### Power-Law Behavior of Earthquakes
+
 Based on empirical data, Gutenberg and Richter[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf) found that the number of earthquakes N above a certain size m that occur follows the distribution:
 
 <p align="center">
  <img src="eqn1.png" height=50px style="align: center;"></img>
 </p>
+
 where a and b are constants that vary depending on the location of the earthquake. The exact cause of this phenomenon is unknown, but because power-law distributions are a common feature of SOC systems, it's possible that earthquakes are a SOC system. The fault lines of earthquakes have also been found to exhibit fracticality, which along with the power-law feature indicates that earthquakes potentially exist in a self-organized critical state. Thus using a simplified model of earthquake systems could help explain how this phenomenon occurs.
 
 ### A Cellular Automaton-based Model for Earthquakes
@@ -25,13 +27,15 @@ Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/Phys
 <p align="center">
  <img src="Plates.png" height=400px style="align: center;"></img>
 </p>
-_**Figure 1: A visualization of the block-spring model of earthquakes. Each block sits on a stationary plate, and is connected to both its neighbors and a moving plate by springs.**_
+
+_**Figure 1:** A visualization of the block-spring model of earthquakes. Each block sits on a stationary plate, and is connected to both its neighbors and a moving plate by springs._
 
  Olami et al. simulate this system by representing everything with an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between neighbors and the sliding plate:
 
  <p align="center">
   <img src="eqn2.png" height=30px style="align: center;"></img>
  </p>
+ 
 where dx is the offset of the block from the equilibrium position, K<sub>1</sub> is the spring constant of horizontal neighbors, K<sub>2</sub> is the spring constant of vertical neighbors, and K<sub>L</sub> is the spring constant connecting to the sliding plate. Olami et al. limit the scope of their analysis to the isotropic case, where K<sub>1</sub> = K<sub>2</sub>; this means that when a block slips, it redistributes its force equally to its horizontal and vertical neighbors. Additionally, we assume that F = 0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to K<sub>L</sub>, until a block reaches the threshold force, F<sub>th</sub>, and slips.
 There are three phases to the earthquake model:
 
@@ -39,15 +43,15 @@ There are three phases to the earthquake model:
 
 2. *Force Redistribution:* First, Olami et al. find which cells have a total force on them greater than or equal to F<sub>th</sub>. Then, for each block with force greater than F<sub>th</sub>, they redistribute forces according to the following equations:
 
-<p align="center">
- <img src="eqn3.png" height=30px style="align: center;"></img>
-</p>  
-<p align="center">
- <img src="eqn4.png" height=30px style="align: center;"></img>
-</p>
-<p align="center">
- <img src="eqn5.png" height=30px style="align: center;"></img>
-</p>
+  <p align="center">
+   <img src="eqn3.png" height=30px style="align: center;"></img>
+  </p>
+  <p align="center">
+   <img src="eqn4.png" height=30px style="align: center;"></img>
+  </p>
+  <p align="center">
+   <img src="eqn5.png" height=30px style="align: center;"></img>
+  </p>
 
   where the force added to each neighbor is defined as:
 
@@ -64,13 +68,13 @@ There are three phases to the earthquake model:
 
 3. *Global Perturbation:* Once all blocks have finished slipping, the earthquake is finished. Then, we perturb the system globally by finding the block with the highest strain, designating it F<sub>i</sub>, and adding F<sub>th</sub> - F<sub>i</sub> to all blocks - this guarantees that at least one block will slip, effectively starting a new earthquake; then, we go back to the force redistribution phase and start again. Recall that in this model, the cause of the first block slipping is the moving of the sliding plate; this global perturbation serves to simulate this effect; since K<sub>L</sub> is the same for all blocks, we can achieve the same outcome as the plate moving by simply adding the same force to all blocks.
 
-The process of redistribution and perturbation can be see in Figure 2:
+  The process of redistribution and perturbation can be see in Figure 2:
 
-![The phases of the simulation.](phases.png)
+  ![The phases of the simulation.](phases.png)
 
-_**Figure 2.** The first four timesteps of a simulation with N = 5 and a single center block initialized to F = 4F<sub>th</sub>. Green indicates a sliding block._
+  _**Figure 2.** The first four timesteps of a simulation with N = 5 and a single center block initialized to F = 4F<sub>th</sub>. Green indicates a sliding block._
 
-In the first timestep, the center block slides; in the next timestep, none of the blocks slide, so the entire system is perturbed and the four blocks neighboring the center block slide. In the third timestep, the center block has gained enough force to slide again, leading to the end result in the fourth timestep.
+  In the first timestep, the center block slides; in the next timestep, none of the blocks slide, so the entire system is perturbed and the four blocks neighboring the center block slide. In the third timestep, the center block has gained enough force to slide again, leading to the end result in the fourth timestep.
 
 ### Earthquake Simulations
 
@@ -85,13 +89,12 @@ Focusing on the body of the data, the relation between earthquake size and proba
 <p align="center">
  <img src="power_law_CDF.png" height=400px style="align: center;"></img>
 </p>
+
 _**Figure 4.** The CDF of the probability of an earthquake's occurrence vs. its size. Simulated over 100,000 iterations with N = 35 and α = 0.1, 0.15, 0.2, and 0.25. Plotted on a log-x scale._
 
 As shown in Figure 4, on a log-x scale, the body of the distribution is fairly straight; additionally, the distribution follows a similar shape across all values of α. Thus, the power-law shape of the CDF appears to be consistent with our results from the log-log PMF plot, indicating that the system follows a power-law distribution.
 
 The only difference in the distribution of our data compared to Olami et al.'s is in the tail behavior; the minimum probability of occurrence we found is 10<sup>-6</sup>, whereas theirs is approximately 10<sup>-8</sup>. This difference is due to the number of simulation iterations - we ran the simulation for 10<sup>6</sup> iterations, making 10<sup>-6</sup> the absolute minimum probability, whereas Olami et al. ran their simulation over approximately 10<sup>8</sup> iterations, lowering the minimum probability. However, this difference only affects the tail of the distribution, which deviates from the straight-line behavior anyway, so we focus only on the body of the data when looking for power-law behavior.
-
-
 
 Olami et al. take their exploration further by examining how this SOC behavior changes quantitatively with the elasticity coefficient. We have already shown qualitatively that the distribution of earthquake sizes follows a power-law under a range of elasticity coefficients. If the distribution of earthquake sizes E is follows a power-law distribution with size m, the distribution of sizes approximately follows:
 
@@ -107,7 +110,7 @@ Thus, the slope of the distribution on a log-log scale gives us the exponent β.
 
 _**Figure 5.** The critical exponent β of the power-law distribution of earthquake sizes as a function of the elasticity coefficient α. Simulated with N = 35 over 100,000 iterations._
 
-Our graph shows that the exponent on the power-law distribution of earthquake sizes increases with the elasticity coefficient, up until the point where a = .2, at which it drops off slightly. This is different from Olami et al., who found that the power-law exponent decreases as a increases. This difference is, again, likely caused by the fact that we ran our simulation for fewer iterations, which caused the exponent on the best-fit line to change due to the "bottoming out" values. However, regardless, our model still indicates that the system follows a power-law distribution, which can be seen quantitatively in Figure 5 and qualitatively in Figure 3. This points toward the system being SOC, but there are more aspects of SOC we can investigate in order to get a more accurate picture.
+Our graph shows that the exponent on the power-law distribution of earthquake sizes increases with the elasticity coefficient, up until the point where α = 0.2, at which it drops off slightly. This is different from Olami et al., who found that the power-law exponent decreases as α increases. This difference is, again, likely caused by the fact that we ran our simulation for fewer iterations, which caused the exponent on the best-fit line to change due to the "bottoming out" values. However, regardless, our model still indicates that the system follows a power-law distribution, which can be seen quantitatively in Figure 5 and qualitatively in Figure 3. This points toward the system being SOC, but there are more aspects of SOC we can investigate in order to get a more accurate picture.
 
 ### Exploring SOC Further: Pink Noise and Fractal Geometry
 
