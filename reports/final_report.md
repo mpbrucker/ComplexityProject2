@@ -21,6 +21,7 @@ Based on empirical data, Gutenberg and Richter[[2]](http://downloads.gphysics.ne
 <p align="center">
  <img src="eqn1.png" height=50px style="align: center;"></img>
 </p>
+
 where a and b are constants that vary depending on the location of the earthquake. The exact cause of this phenomenon is unknown, but because power-law distributions are a common feature of SOC systems; additionally, the fault lines of earthquakes have also been found to exhibit fracticality[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf), which also indicates that earthquakes potentially exist in a self-organized critical state. Thus, we can explain these properties of earthquakes through simplified SOC models. However, Olami et al. take a different approach to SOC models; they explore SOC in a system that is not conservative, whereas energy conservation is typically assumed to be a requirement for SOC systems[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf). Exploring how the level of conservation affects the SOC behavior of the system can help explain under what conditions the system is SOC, which is relevant to real-world systems like earthquakes that are non-conservative.
 
 ### A Cellular Automaton-based Model for Earthquakes
@@ -30,13 +31,15 @@ Olami, et al.[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244)
 <p align="center">
  <img src="Plates.png" height=400px style="align: center;"></img>
 </p>
-_**Figure 1: A visualization of the block-spring model of earthquakes. Each block sits on a stationary plate, and is connected to both its neighbors and a moving plate by springs.**_
+
+_**Figure 1:** A visualization of the block-spring model of earthquakes. Each block sits on a stationary plate, and is connected to both its neighbors and a moving plate by springs._
 
  Olami et al. represent this system computationally with an NxN grid of cellular automata, where each cell represents a single block. The forces on each block are determined by the position of the block, the position of its neighbors, and the spring constants between neighbors and the sliding plate:
 
- <p align="center">
+<p align="center">
   <img src="eqn2.png" height=30px style="align: center;"></img>
- </p>
+</p>
+ 
 where dx is the offset of the block from the equilibrium position, K<sub>1</sub> is the spring constant of horizontal neighbors, K<sub>2</sub> is the spring constant of vertical neighbors, and K<sub>L</sub> is the spring constant connecting to the sliding plate. Olami et al. limit the scope of their analysis to the isotropic case, where K<sub>1</sub> = K<sub>2</sub>; thus, when a block slips, it redistributes its total force equally to its horizontal and vertical neighbors. Additionally, we assume that F = 0 at the boundaries. When the sliding plate moves, the forces on each block increase proportionally to K<sub>L</sub>, until a block reaches the threshold force, F<sub>th</sub>, and slips.
 There are three phases to the earthquake model:
 
@@ -44,38 +47,34 @@ There are three phases to the earthquake model:
 
 2. *Force Redistribution:* First, Olami et al. find which cells have a total force on them greater than or equal to F<sub>th</sub>. Then, for each block with force greater than F<sub>th</sub>, they redistribute forces according to the following equations:
 
-<p align="center">
- <img src="eqn3.png" height=30px style="align: center;"></img>
-</p>  
-<p align="center">
- <img src="eqn4.png" height=30px style="align: center;"></img>
-</p>
-<p align="center">
- <img src="eqn5.png" height=30px style="align: center;"></img>
-</p>
-
+  <p align="center">
+    <img src="eqn3.png" height=30px style="align: center;"></img>
+  </p>  
+  <p align="center">
+    <img src="eqn4.png" height=30px style="align: center;"></img>
+  </p>
+  <p align="center">
+    <img src="eqn5.png" height=30px style="align: center;"></img>
+  </p>
+  
   where the force added to each neighbor is defined as:
-
+  
   <p align="center">
    <img src="eqn6.png" height=50px style="align: center;"></img>
   </p>  
   <p align="center">
    <img src="eqn7.png" height=50px style="align: center;"></img>
   </p>
-
+  
   In this model, the values of α<sub>1</sub> and α<sub>2</sub> are the *elasticity coefficients*, which control what percentage of force is distributed from a sliding block to each of its neighbors, giving us an idea of how much force is lost (and thus how much energy is lost) when a block slides. Note that in this model, because we limit our exploration to the case K<sub>1</sub> = K<sub>2</sub>, then α<sub>1</sub> = α<sub>2</sub> = α. When α = .25 the system is effectively conservative, as each block redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
-
+  
   This process of force redistribution is continued until enough energy has been lost such that no blocks are slipping.
 
 3. *Global Perturbation:* Once all blocks have finished slipping, the earthquake is finished. Then, we perturb the system globally by finding the block with the highest strain, designating it F<sub>i</sub>, and adding F<sub>th</sub> - F<sub>i</sub> to all blocks - this guarantees that at least one block will slip, effectively starting a new earthquake; then, we go back to the force redistribution phase and start again. Recall that in this model, the cause of the first block slipping is the moving of the sliding plate; this global perturbation serves to simulate this effect; since K<sub>L</sub> is the same for all blocks, we can achieve the same outcome as the plate moving by simply adding the same force to all blocks.
-
-The process of redistribution and perturbation can be see in Figure 2:
-
-![The phases of the simulation.](phases.png)
-
-_**Figure 2.** The first four timesteps of a simulation with N = 5 and a single center block initialized to F = 4F<sub>th</sub>. Green indicates a sliding block._
-
-In the first timestep, the center block slides; in the next timestep, none of the blocks slide, so the entire system is perturbed and the four blocks neighboring the center block slide. In the third timestep, the center block has gained enough force to slide again, leading to the end result in the fourth timestep.
+  The process of redistribution and perturbation can be see in Figure 2:
+  ![The phases of the simulation.](phases.png)
+  _**Figure 2.** The first four timesteps of a simulation with N = 5 and a single center block initialized to F = 4F<sub>th</sub>. Green indicates a sliding block._
+  In the first timestep, the center block slides; in the next timestep, none of the blocks slide, so the entire system is perturbed and the four blocks neighboring the center block slide. In the third timestep, the center block has gained enough force to slide again, leading to the end result in the fourth timestep.
 
 ### Earthquake Simulations
 
