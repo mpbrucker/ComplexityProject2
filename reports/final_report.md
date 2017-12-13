@@ -146,7 +146,7 @@ _**Figure 7.** The power of each frequency in the sliding-block signal, plotted 
 
 _**Figure 8.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35, and α = 0.25._
 
-At α = .1, the power spectrum is less linear on a log-log scale: there is a large jump at high frequencies. At α = .25, the spectrum is closer to linear, but with a slope of -1.71, it is not very close to being pink noise. Thus, the pink noise property of the system does not appear to be consistent across different values of α.
+At α = .1, the power spectrum is less linear on a log-log scale: there is a large jump at high frequencies. At α = .25, the spectrum is closer to linear, but with a slope of -1.71, it is likely not pink noise. Thus, the pink noise property of the system does not appear to be consistent across different values of α.
 
 #### Fractal Geometry
 The last factor we investigate to determine the system's SOC properties is fractal geometry. Finding fractal geometry requires a box-counting dimension; for our system, we choose the total force on each block as the box-counting dimension, as it is a quantitative value that can be measured across different values of N. However, because the forces on each block are non-discrete values, we must first convert them into discrete values by placing them into different "dimensions," where each dimension contains the forces that fall within a certain range. In our model, we sort the forces on blocks into three dimensions, one with forces in the range [0, F<sub>th</sub>/3], one with forces in range [F<sub>th</sub>/3, 2F<sub>th</sub>/3], etc. Then, we run the simulation for a high number of iterations and wait for the earthquake to settle, and count the number of blocks that fall within each range.
@@ -155,9 +155,9 @@ The last factor we investigate to determine the system's SOC properties is fract
  <img src="fractals_2.png" height=370px style="align: center;"></img>
 </p>
 
-_**Figure 7.** The size of the box-counting dimension as a function of the size of system. Simulated from N = 10 to N = 100 over 20,000 iterations for each size, and plotted on a log-log scale._
+_**Figure 9.** The size of the box-counting dimension as a function of the size of system. Simulated from N = 10 to N = 100 over 20,000 iterations for each size, and plotted on a log-log scale._
 
-Our simulations only resulted with blocks in the first two dimensions, likely because the forces on the blocks have to be well under F<sub>th</sub> for the earthquake to settle. Figure 7 shows the results of our simulations within the first two dimensions. On a log-log scale, the slope of each distribution is 2.05 and 1.97, respectively, which is essentially quadratic. Thus, it is pretty unlikely that this system exhibits fractal geometry, at least in the box-counting dimension we use. Additionally, changing α does not noticeably affect the fracticality of the system; at α = 0.1, the dimensions are 1.99 and 2.01, and at α = 0.25 the dimensions are 1.9 and 2.04. So with this box counting dimension, there does not appear to be a value of α that gives the system fracticality.
+Our simulations only resulted with blocks in the first two dimensions, likely because the forces on the blocks have to be well under F<sub>th</sub> for the earthquake to settle. Figure 9 shows the results of our simulations within the first two dimensions. On a log-log scale, the slope of each distribution is 2.05 and 1.97, respectively, which is essentially quadratic. Thus, it is pretty unlikely that this system exhibits fractal geometry, at least in the box-counting dimension we use. Additionally, changing α does not noticeably affect the fracticality of the system; at α = 0.1, the dimensions are 1.99 and 2.01, and at α = 0.25 the dimensions are 1.9 and 2.04. So with this box counting dimension, there does not appear to be a value of α that gives the system fracticality.
 
 ### Conclusions
 
