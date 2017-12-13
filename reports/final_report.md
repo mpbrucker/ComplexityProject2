@@ -1,10 +1,19 @@
+<!-- >>> Power law (0.1, 0.15, 0.2, 0.25): 2.6, 2.3, 2.25, 1.7
+>>> Pink noise: a = -1.07
+>>> Fractal geometry: (dim1, dim2, dim3, dim4): 2.05, 1.97, 0.01, nan
+
+>>> Pink noise, alpha = 10: non-linear
+>>> Pink noise, alpha = .25: -1.76
+>>> Fractals, alpha = .1: 1.99, 2.01
+>>> Fractals, alpha = .25: 1.90, 2.04 -->
+
 
 # Self-Organized Critical Properties of Earthquakes through Cellular Automata-based Models
 ### Evan New-Schmidt, Matt Brucker
 
 ### Abstract
 
-In the physical world, earthquakes follow an empirically-determined law known as the Gutenberg-Richter law[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf): the number of earthquakes that occur follow a power-law distribution relative to the size of the earthquake. One potential explanation for this, initially proposed by Bak and Chen, is that the crust of the earth is in a self-organized critical (SOC) state. They explore this possibility by modeling a fault line in the earth's crust as a grid of sliding blocks, with each block sitting on a stationary plate and attached by springs to a sliding plate as well as its neighbors. Each block has a static friction force which, when overcome by the total spring force, causes the block to slip, thereby redistributing its force to its neighbors. In this paper, we replicate a similar model proposed by Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244), which differs from Bak and Chen's model in that it is non-conservative: blocks have an elasticity coefficient that controls how much force is transferred when slipping occurs, and thus energy is lost from the system. This is important because previous model such as Bak and Chen's assume energy conservation to be necessary for SOC; however, earthquakes in the real world are not conservative, and as such, under Bak and Chen's definition they lack the elements necessary to be SOC. We replicate Olami et al.'s model in order to determine whether it follows a power-law distribution even under non-conservative conditions, in order to determine whether non-conservative systems can be SOC, and thus whether earthquakes in the natural world are SOC. We find results consistent with theirs: the sizes of earthquakes follow a power-law distribution over a range of values of elasticity coefficients, suggesting that this model may be SOC. In order to more thoroughly define whether it is SOC, We investigate the other common features of SOC systems - pink noise and fractal geometry - to determine the robustness of the system's SOC properties. We find that this system does exhibit SOC behavior to some degree, particularly in its power-law distribution and in its pink noise; however, we do not find any fracticality in the system. Still, this model exhibits SOC behavior when non-conservative, which is important for defining real-world earthquakes
+In the physical world, earthquakes follow an empirically-determined law known as the Gutenberg-Richter law[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf): the number of earthquakes that occur follow a power-law distribution relative to the size of the earthquake. One potential explanation for this, initially proposed by Bak and Chen, is that the crust of the earth is in a self-organized critical (SOC) state. They explore this possibility by modeling a fault line in the earth's crust as a grid of sliding blocks, with each block sitting on a stationary plate and attached by springs to a sliding plate as well as its neighbors. Each block has a static friction force which, when overcome by the total spring force, causes the block to slip, thereby redistributing its force to its neighbors. In this paper, we replicate a similar model proposed by Olami, Feder, and Christensen[[1]](https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.68.1244), which differs from Bak and Chen's model in that it is non-conservative: blocks have an elasticity coefficient that controls how much force is transferred when slipping occurs, and thus energy is lost from the system. This is important because previous model such as Bak and Chen's assume energy conservation to be necessary for SOC; however, earthquakes in the real world are not conservative, and as such, under Bak and Chen's definition they lack the elements necessary to be SOC. We replicate Olami et al.'s model in order to determine whether it follows a power-law distribution even under non-conservative conditions, in order to determine whether non-conservative systems can be SOC, and thus whether earthquakes in the natural world are SOC. We find results consistent with theirs: the sizes of earthquakes follow a power-law distribution over a range of values of elasticity coefficients, suggesting that this model may be SOC. In order to more thoroughly define whether it is SOC, We investigate the other common features of SOC systems - pink noise and fractal geometry - to determine the robustness of the system's SOC properties. We find that this system does exhibit SOC behavior to some degree, particularly in its power-law distribution and in its pink noise; however, we do not find any fracticality in the system at any level of energy conservation. Still, this model exhibits SOC behavior when non-conservative, which is important for defining real-world earthquakes
 
 ### Power-Law Behavior of Earthquakes
 Based on empirical data, Gutenberg and Richter[[2]](http://downloads.gphysics.net/papers/BakTang_1989.pdf) find that the number of earthquakes N above a certain size m that occur follows the distribution:
@@ -54,7 +63,7 @@ There are three phases to the earthquake model:
    <img src="eqn7.png" height=50px style="align: center;"></img>
   </p>
 
-  In this model, the values of α<sub>1</sub> and α<sub>2</sub> are the *elasticity coefficients*, which control what percentage of force is distributed from a sliding block to each of its neighbors, and thus give us an idea of how much force is lost when a block slides. Note that in this model, because we limit it to K<sub>1</sub> = K<sub>2</sub>, then α<sub>1</sub> = α<sub>2</sub> = α. When α = .25 the system is effectively conservative, as each block redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
+  In this model, the values of α<sub>1</sub> and α<sub>2</sub> are the *elasticity coefficients*, which control what percentage of force is distributed from a sliding block to each of its neighbors, giving us an idea of how much force is lost (and thus how much energy is lost) when a block slides. Note that in this model, because we limit our exploration to the case K<sub>1</sub> = K<sub>2</sub>, then α<sub>1</sub> = α<sub>2</sub> = α. When α = .25 the system is effectively conservative, as each block redistributes 25% of its force to each of its four neighbors, conserving energy (except at the edges).
 
   This process of force redistribution is continued until enough energy has been lost such that no blocks are slipping.
 
@@ -118,9 +127,26 @@ If we model the earthquake over a series of timesteps as a time-domain signal, w
  <img src="frequency_2.png" height=400px style="align: center;"></img>
 </p>
 
-_**Figure 6.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35._
+_**Figure 6.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35, and α = 0.2._
 
 The body of the data is fairly linear; however, the distribution is flatter at low frequencies and curves upward at high frequencies. The slope of this distribution on a log-log scale is -1.07, which is close to the standard slope of -1 for pink noise. This indicates that the system is SOC; the upward curve at high frequencies is likely due to noise, since power is low enough that small variations could cause a noticeable upward curve as in our data.
+
+Additionally, we examine how this power spectrum is affected by the level of energy conservation. Figures 7 and 8 show the power spectrum at α = .1 and α = .25, respectively.
+
+<p align="center">
+ <img src="frequency_alpha_10.png" height=400px style="align: center;"></img>
+</p>
+
+_**Figure 7.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35, and α = 0.1._
+
+
+<p align="center">
+ <img src="frequency_alpha_25.png" height=400px style="align: center;"></img>
+</p>
+
+_**Figure 8.** The power of each frequency in the sliding-block signal, plotted on a log-log scale. Simulated over 10,000 iterations with N = 35, and α = 0.25._
+
+At α = .1, the power spectrum is less linear on a log-log scale: there is a large jump at high frequencies. At α = .25, the spectrum is closer to linear, but with a slope of -1.71, it is not very close to being pink noise. Thus, the pink noise property of the system does not appear to be consistent across different values of α.
 
 #### Fractal Geometry
 The last factor we investigate to determine the system's SOC properties is fractal geometry. Finding fractal geometry requires a box-counting dimension; for our system, we choose the total force on each block as the box-counting dimension, as it is a quantitative value that can be measured across different values of N. However, because the forces on each block are non-discrete values, we must first convert them into discrete values by placing them into different "dimensions," where each dimension contains the forces that fall within a certain range. In our model, we sort the forces on blocks into three dimensions, one with forces in the range [0, F<sub>th</sub>/3], one with forces in range [F<sub>th</sub>/3, 2F<sub>th</sub>/3], etc. Then, we run the simulation for a high number of iterations and wait for the earthquake to settle, and count the number of blocks that fall within each range.
@@ -131,11 +157,11 @@ The last factor we investigate to determine the system's SOC properties is fract
 
 _**Figure 7.** The size of the box-counting dimension as a function of the size of system. Simulated from N = 10 to N = 100 over 20,000 iterations for each size, and plotted on a log-log scale._
 
-Our simulations only resulted with blocks in the first two dimensions, likely because the forces on the blocks have to be well under F<sub>th</sub> for the earthquake to settle. Figure 7 shows the results of our simulations within the first two dimensions. On a log-log scale, the slope of each distribution is 2.05 and 1.97, respectively, which is essentially quadratic. Thus, it is pretty unlikely that this system exhibits fractal geometry, at least in the box-counting dimension we use.
+Our simulations only resulted with blocks in the first two dimensions, likely because the forces on the blocks have to be well under F<sub>th</sub> for the earthquake to settle. Figure 7 shows the results of our simulations within the first two dimensions. On a log-log scale, the slope of each distribution is 2.05 and 1.97, respectively, which is essentially quadratic. Thus, it is pretty unlikely that this system exhibits fractal geometry, at least in the box-counting dimension we use. Additionally, changing α does not noticeably affect the fracticality of the system; at α = 0.1, the dimensions are 1.99 and 2.01, and at α = 0.25 the dimensions are 1.9 and 2.04. So with this box counting dimension, there does not appear to be a value of α that gives the system fracticality.
 
 ### Conclusions
 
-Based on our replication of Olami et al., the sizes of earthquakes in our model appear to follow a power-law distribution; additionally, we find that this behavior is consistent across a range of different elasticity coefficients, including when the system is non-conservative. This indicates that energy conservation is not a requirement for SOC systems, at least when a global perturbation force is present. Looking beyond power-law distributions, we found a less clear picture of the system's SOC properties: exploring the "noise" of the system by representing the sliding of blocks as a discrete signal, we find that the system has a power spectrum close to pink noise (albeit with slight deviations) indicating that the system is SOC. However, there is likely no fracticality present in our system - at least with the box-counting dimension we use, which means that there may be another dimension that could be used to find fracticality. Still, a power-law distribution is the phenomenon observed in real-world earthquakes, and our model follows it, even when non-conservative. So, this makes it possible that earthquakes in the real world are SOC, even though they are non-conservative.
+Based on our replication of Olami et al., the sizes of earthquakes in our model appear to follow a power-law distribution; additionally, we find that this behavior is consistent across a range of different elasticity coefficients, including when the system is non-conservative. This indicates that energy conservation is not a requirement for SOC systems, at least when a global perturbation force is present. Looking beyond power-law distributions, we found a less clear picture of the system's SOC properties: exploring the "noise" of the system by representing the sliding of blocks as a discrete signal, we find that the system has a power spectrum close to pink noise (albeit with slight deviations) indicating that the system is SOC; however, the pink noise property does not hold under different amounts of energy conservation. Additionally, there is likely no fracticality present in our system, among any values of the elasticity coefficient - at least with the box-counting dimension we use, which means that there may be another dimension that could be used to find fracticality. Still, a power-law distribution is the phenomenon observed in real-world earthquakes, and our model follows it, even when non-conservative. Thus, it is possible that earthquakes in the real world are SOC despite being non-conservative.
 
 
 ### Bibliography
